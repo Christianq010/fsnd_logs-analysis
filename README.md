@@ -36,7 +36,19 @@
   ```
     psql -d news -f newsdata.sql
   ```
+  * Running this command will connect to your installed database server and execute the SQL commands in the downloaded file, creating tables and populating them with data.
+    * `psql` — the PostgreSQL command line program
+    * `-d news` — connect to the database named news which has been set up for you
+    * `-f newsdata.sql` — run the SQL statements in the file `newsdata.sql`
+  
   The database includes three tables:
   * The authors table includes information about the authors of articles.
   * The articles table includes the articles themselves.
   * The log table includes one entry for each time a user has accessed the site.
+
+  2. Use the following commands to explore the database - `psql -d news`.
+  * `\dt` — display tables — lists the tables that are available in the database.
+  * `\d table` — (replace table with the name of a table) — shows the database schema for that particular table.
+
+#### Creating the Python Reporting Tool 
+
