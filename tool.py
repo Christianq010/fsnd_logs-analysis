@@ -20,6 +20,13 @@ c = db.cursor()
 c.execute(query1)
 
 # fetch results from the cursor
-results = c.fetchall()
+query_results = c.fetchall()
 
 db.close()
+
+# Create to function
+def print_query_results(query_result):
+    for result in query_results:
+        print ('\t' + str(result[0]) + ' : ' + str(result[1]))
+
+
