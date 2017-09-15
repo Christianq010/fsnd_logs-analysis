@@ -1,27 +1,25 @@
 import psycopg2
+DB_NAME = "news"
 
-# Connect to an existing database
-conn = psycopg2.connect("dbname=news user=postgres")
+# Question 1. What are the most popular three articles of all time?
+query1 = """ .. """
 
-# Open a cursor to perform database operations
-cur = conn.cursor()
+# Question 2. Who are the most popular article authors of all time?
+query2 = """ ... """
 
-# Execute a command: this creates a new table
-cur.execute("CREATE TABLE test (id serial PRIMARY KEY, num integer, data varchar);")
+# Question 3. On which days did more than 1% of requests lead to errors?
+query3 = " ..  "
 
-# Pass data to fill a query placeholders and let Psycopg perform
-# the correct conversion (no more SQL injections!)
-cur.execute("INSERT INTO test (num, data) VALUES (%s, %s)",
-...      (100, "abc'def"))
+# Connect to our Database
+db = psycopg2.connect(database=DB_NAME)
 
-# Query the database and obtain data as Python objects
-cur.execute("SELECT * FROM test;")
-cur.fetchone()
-(1, 100, "abc'def")
+# cursor runs queries and fetches results
+c = db.cursor()
 
-# Make the changes to the database persistent
-conn.commit()
+# execute queries above from the cursor 
+c.execute(query1)
 
-# Close communication with the database
-cur.close()
-conn.close()
+# fetch results from the cursor
+results = c.fetchall()
+
+db.close()
