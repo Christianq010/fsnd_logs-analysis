@@ -71,20 +71,20 @@
   * The days with the most Error Logs
 
   ```sql
-    create view total_status2 as
-    select time ::timestamp::date as day, cast(count(status) as float) as total
-    from log
-    group by day
-    order by total desc;
+    CREATE VIEW total_status2 AS
+    SELECT time ::timestamp::date AS date, cast(count(status) AS float) AS total_count
+    FROM log
+    GROUP BY date
+    ORDER BY total_count DESC;
   ```
 
   ```sql
-    create view errors2 as 
-    select time ::timestamp::date as day, cast(count(status) as float) as errors
-    from log
-    where status != '200 OK'
-    group by day
-    order by errors desc;
+    CREATE VIEW errors2 AS
+    SELECT time ::timestamp::date AS date, cast(count(status) AS float) AS errors
+    FROM log
+    WHERE status != '200 OK'
+    GROUP BY date
+    ORDER BY errors DESC;
   ```
 
 #### The Python Reporting Tool 
