@@ -49,6 +49,27 @@
   2. Use the following commands to explore the database - `psql -d news`.
   * `\dt` — display tables — lists the tables that are available in the database.
   * `\d table` — (replace table with the name of a table) — shows the database schema for that particular table.
+  * Use a combination of `select, from and where` SQL statements to explore data, look for connections and draw conclusions.
+  * Create the following Views - 
+  ```sql
+      CREATE VIEW article_views AS
+      SELECT title,count(log.id) AS views 
+      FROM articles,log 
+      WHERE log.path = CONCAT('/article/', articles.slug) 
+      GROUP BY articles.title 
+      ORDER BY views DESC;
+  ```  
+  ```sql
+     CREATE VIEW articles_by_author AS
+     SELECT title, name
+     FROM articles, authors
+     WHERE articles.author = authors.id;
+  ```
+  * 
 
 #### Creating the Python Reporting Tool 
+  
 
+
+### References
+  * http://initd.org/psycopg/docs/usage.html
