@@ -94,6 +94,9 @@
   ```
   * The python file `tool.py` executes 3 functions, printing out the answers onto the terminal.
 
+#### Notes: 
+  * Use ES Lint to Clean Code to PEP Standards.
+
 ### References
 * https://www.postgresql.org/docs/9.5/static/functions-string.html
 * http://initd.org/psycopg/docs/usage.html

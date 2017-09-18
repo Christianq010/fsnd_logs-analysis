@@ -33,14 +33,15 @@ ORDER BY errors DESC;
 
 """
 
+
 # Connect to our Database and Fetch_Results
 def fetch_results(query):
-    try: 
+    try:
         # Connect to our Database
         db = psycopg2.connect(database=DB_NAME)
         # cursor runs queries and fetches results
         c = db.cursor()
-        # execute queries above from the cursor 
+        # execute queries above from the cursor
         c.execute(query)
         # fetch results from the cursor
         query_results = c.fetchall()
@@ -49,11 +50,12 @@ def fetch_results(query):
     except BaseException:
         print ("Sorry, unable to fetch results from Database")
 
+
 # Question 1. What are the most popular three articles of all time?
 def print_popular_articles():
     print """ The most popular three articles """
     query1 = """
-            select title, views 
+            select title, views
             from article_views limit 3;
             """
     popular_articles = fetch_results(query1)
@@ -81,7 +83,7 @@ def print_popular_authors():
 def print_error_request():
     print """ Days in which more than 1% of requests lead to errors """
     query3 = """
-            SELECT errors2.day, 
+            SELECT errors2.day,
             ROUND(100 * sum(errors2.errors/total_status2.total)::DECIMAL, 2)
             AS Error_Percentage
             FROM errors2, total_status2
@@ -91,7 +93,8 @@ def print_error_request():
             """
     error_log = fetch_results(query3)
     for result in error_log:
-        print '\n' + '"' + result[0].strftime('%B %d %Y') + '" --> ' + str(result[1]) + "% errors"
+        print '\n' + '"' + result[0].strftime('%B %d %Y') + '" --> ' +
+        str(result[1]) + "% errors"
     print(' ')
 
 # Run all 3 functions when executed
