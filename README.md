@@ -50,7 +50,9 @@
   * `\dt` — display tables — lists the tables that are available in the database.
   * `\d table` — (replace table with the name of a table) — shows the database schema for that particular table.
   * Use a combination of `select, from and where` SQL statements to explore data, look for connections and draw conclusions.
-  * Create the following Views - 
+  
+  3. Create the following Views - 
+  * Most Viewed Articles
   ```sql
       CREATE VIEW article_views AS
       SELECT title,count(log.id) AS views 
@@ -58,18 +60,19 @@
       WHERE log.path = CONCAT('/article/', articles.slug) 
       GROUP BY articles.title 
       ORDER BY views DESC;
-  ```  
+  ```
+  * Most Popular Authors  
   ```sql
      CREATE VIEW articles_by_author AS
      SELECT title, name
      FROM articles, authors
      WHERE articles.author = authors.id;
   ```
-  * 
+  * Error Logs
 
-#### Creating the Python Reporting Tool 
-  
-
-
-### References
-  * http://initd.org/psycopg/docs/usage.html
+#### The Python Reporting Tool 
+  * After the Views have been created, inside the virtual machine run `tool.py` with - 
+  ```python
+  python tool.py
+  ```
+  * The python file `tool.py` executes 3 functions, printing out the answers onto the terminal.
