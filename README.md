@@ -63,7 +63,7 @@
   ```
   * Most Popular Authors  
   ```sql
-     CREATE VIEW articles_by_author AS
+     CREATE VIEW authors_by_article AS
      SELECT title, name
      FROM articles, authors
      WHERE articles.author = authors.id;
