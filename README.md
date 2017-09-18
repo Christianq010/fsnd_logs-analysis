@@ -103,3 +103,8 @@
 * https://stackoverflow.com/questions/770579/how-to-calculate-percentage-with-a-sql-statement
 * https://stackoverflow.com/questions/466345/converting-string-into-datetime
 * https://www.postgresql.org/message-id/42231EB6.9F6D20F3%40rodos.fzk.de
+
+### Inspiration for Solution taken from the following projects
+* https://github.com/sagarchoudhary96/Log-Analysis
+* https://github.com/BrendanCarlin/log_analysis
+* https://github.com/zmrow/Udacity_logs_analysis
