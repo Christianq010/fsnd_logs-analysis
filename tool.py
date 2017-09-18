@@ -93,8 +93,8 @@ def print_error_request():
             """
     error_log = fetch_results(query3)
     for result in error_log:
-        print '\n' + '"' + result[0].strftime('%B %d %Y') + '" --> ' +
-        str(result[1]) + "% errors"
+        print('\n' + '"' + result[0].strftime('%B %d %Y') +
+              '" --> ' + str(result[1]) + "% errors")
     print(' ')
 
 # Run all 3 functions when executed
