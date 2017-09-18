@@ -19,7 +19,8 @@ FROM articles, authors
 WHERE articles.author = authors.id;
 
 CREATE VIEW total_status2 AS
-SELECT time ::timestamp::date AS date, cast(count(status) AS float) AS total_count
+SELECT time ::timestamp::date AS date, cast(count(status) AS float)
+AS total_count
 FROM log
 GROUP BY date
 ORDER BY total_count DESC;
@@ -48,7 +49,7 @@ def fetch_results(query):
         db.close()
         return query_results
     except BaseException:
-        print ("Sorry, unable to fetch results from Database")
+        print("Sorry, unable to fetch results from Database")
 
 
 # Question 1. What are the most popular three articles of all time?
@@ -84,7 +85,8 @@ def print_error_request():
     print """ Days in which more than 1% of requests lead to errors """
     query3 = """
             SELECT errors2.date,
-            ROUND(100 * sum(errors2.errors/total_status2.total_count)::DECIMAL, 2)
+            ROUND(100 * sum(errors2.errors/total_status2.total_count)
+            ::DECIMAL, 2)
             AS Error_Percentage
             FROM errors2, total_status2
             WHERE total_status2.date = errors2.date
@@ -96,6 +98,7 @@ def print_error_request():
         print('\n' + '"' + result[0].strftime('%B %d %Y') +
               '" --> ' + str(result[1]) + "% errors")
     print(' ')
+
 
 # Run all 3 functions when executed
 if __name__ == "__main__":
