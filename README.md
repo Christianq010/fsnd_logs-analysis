@@ -68,7 +68,24 @@
      FROM articles, authors
      WHERE articles.author = authors.id;
   ```
-  * Error Logs
+  * The day with the most Error Logs
+
+  ```sql
+  create view total_status1 as
+  select date_trunc('day', time), cast(count(status) as float) as total
+  from log
+  group by date_trunc('day',time)
+  order by total desc;
+  ```
+
+  ```sql
+      create view errors1 as 
+      select date_trunc('day', time), cast(count(status) as float) as errors
+      from log
+      where status != '200 OK'
+      group by date_trunc('day',time)
+      order by errors desc;
+  ```
 
 #### The Python Reporting Tool 
   * After the Views have been created, inside the virtual machine run `tool.py` with - 

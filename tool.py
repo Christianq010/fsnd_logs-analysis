@@ -18,6 +18,7 @@ SELECT title, name
 FROM articles, authors
 WHERE articles.author = authors.id;
 
+Days with the Most Errors View:
 
 
 
@@ -68,8 +69,11 @@ def print_popular_authors():
 
 
 # Question 3. On which days did more than 1% of requests lead to errors?
-# def print_error_request():
-    
+def print_error_request():
+    query3 = """
+
+
+            """    
 
 
 
