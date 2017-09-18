@@ -19,16 +19,16 @@ FROM articles, authors
 WHERE articles.author = authors.id;
 
 CREATE VIEW total_status2 AS
-SELECT time ::timestamp::date AS day, cast(count(status) AS float) AS total
+SELECT time ::timestamp::date AS date, cast(count(status) AS float) AS total_count
 FROM log
-GROUP BY day
-ORDER BY total DESC;
+GROUP BY date
+ORDER BY total_count DESC;
 
 CREATE VIEW errors2 AS
-SELECT time ::timestamp::date AS day, cast(count(status) AS float) AS errors
+SELECT time ::timestamp::date AS date, cast(count(status) AS float) AS errors
 FROM log
 WHERE status != '200 OK'
-GROUP BY day
+GROUP BY date
 ORDER BY errors DESC;
 
 """
@@ -83,13 +83,13 @@ def print_popular_authors():
 def print_error_request():
     print """ Days in which more than 1% of requests lead to errors """
     query3 = """
-            SELECT errors2.day,
-            ROUND(100 * sum(errors2.errors/total_status2.total)::DECIMAL, 2)
+            SELECT errors2.date,
+            ROUND(100 * sum(errors2.errors/total_status2.total_count)::DECIMAL, 2)
             AS Error_Percentage
             FROM errors2, total_status2
-            WHERE total_status2.day = errors2.day
-            AND (((errors2.errors/total_status2.total) * 100) > 1.0)
-            GROUP BY errors2.day;
+            WHERE total_status2.date = errors2.date
+            AND (((errors2.errors/total_status2.total_count) * 100) > 1.0)
+            GROUP BY errors2.date;
             """
     error_log = fetch_results(query3)
     for result in error_log:
