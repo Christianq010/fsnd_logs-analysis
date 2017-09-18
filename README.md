@@ -68,7 +68,7 @@
      FROM articles, authors
      WHERE articles.author = authors.id;
   ```
-  * The day with the most Error Logs
+  * The days with the most Error Logs
 
   ```sql
     create view total_status2 as
@@ -98,4 +98,5 @@
 * https://www.postgresql.org/docs/9.5/static/functions-string.html
 * http://initd.org/psycopg/docs/usage.html
 * https://stackoverflow.com/questions/770579/how-to-calculate-percentage-with-a-sql-statement
-* 
+* https://stackoverflow.com/questions/466345/converting-string-into-datetime
+* https://www.postgresql.org/message-id/42231EB6.9F6D20F3%40rodos.fzk.de
