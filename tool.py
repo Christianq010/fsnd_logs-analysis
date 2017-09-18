@@ -1,10 +1,11 @@
 import psycopg2
+from datetime import datetime
+
 DB_NAME = "news"
 
 
 # Create the following Views before executing this file
 """
-Top 3 Viewed articles:
 CREATE VIEW article_views AS
 SELECT title,count(log.id) AS views
 FROM articles,log
@@ -12,15 +13,23 @@ WHERE log.path = CONCAT('/article/', articles.slug)
 GROUP BY articles.title
 ORDER BY views DESC;
 
-Most Popular Authors:
 CREATE VIEW authors_by_article AS
 SELECT title, name
 FROM articles, authors
 WHERE articles.author = authors.id;
 
-Days with the Most Errors View:
+CREATE VIEW total_status2 AS
+SELECT time ::timestamp::date AS day, cast(count(status) AS float) AS total
+FROM log
+GROUP BY day
+ORDER BY total DESC;
 
-
+CREATE VIEW errors2 AS
+SELECT time ::timestamp::date AS day, cast(count(status) AS float) AS errors
+FROM log
+WHERE status != '200 OK'
+GROUP BY day
+ORDER BY errors DESC;
 
 """
 
@@ -71,13 +80,21 @@ def print_popular_authors():
 # Question 3. On which days did more than 1% of requests lead to errors?
 def print_error_request():
     query3 = """
-
-
+            SELECT errors2.day, (errors2.errors/total_status2.total * 100)
+            AS Error_Percentage
+            FROM errors2, total_status2
+            WHERE total_status2.day = errors2.day
+            AND (((errors2.errors/total_status2.total) * 100) > 1.0)
+            ORDER BY errors2.day;
             """    
-
-
+    error_log = fetch_results(query3)
+    print """ The Most Popular Authors """
+    for result in error_log:
+        print '\n' + '"' + str(result[0]) + '" -- ' + str(result[1]) + "% errors"
+    print(' ')
 
 # Run all 3 functions when executed
 if __name__ == "__main__":
     print_popular_articles()
     print_popular_authors()
+    print_error_request()

@@ -71,20 +71,20 @@
   * The day with the most Error Logs
 
   ```sql
-  create view total_status1 as
-  select date_trunc('day', time), cast(count(status) as float) as total
-  from log
-  group by date_trunc('day',time)
-  order by total desc;
+    create view total_status2 as
+    select time ::timestamp::date as day, cast(count(status) as float) as total
+    from log
+    group by day
+    order by total desc;
   ```
 
   ```sql
-      create view errors1 as 
-      select date_trunc('day', time), cast(count(status) as float) as errors
-      from log
-      where status != '200 OK'
-      group by date_trunc('day',time)
-      order by errors desc;
+    create view errors2 as 
+    select time ::timestamp::date as day, cast(count(status) as float) as errors
+    from log
+    where status != '200 OK'
+    group by day
+    order by errors desc;
   ```
 
 #### The Python Reporting Tool 
@@ -93,3 +93,9 @@
   python tool.py
   ```
   * The python file `tool.py` executes 3 functions, printing out the answers onto the terminal.
+
+### References
+* https://www.postgresql.org/docs/9.5/static/functions-string.html
+* http://initd.org/psycopg/docs/usage.html
+* https://stackoverflow.com/questions/770579/how-to-calculate-percentage-with-a-sql-statement
+* 
