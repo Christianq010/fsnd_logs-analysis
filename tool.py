@@ -51,19 +51,20 @@ def fetch_results(query):
 
 # Question 1. What are the most popular three articles of all time?
 def print_popular_articles():
+    print """ The most popular three articles """
     query1 = """
             select title, views 
             from article_views limit 3;
             """
     popular_articles = fetch_results(query1)
-    print """ The most popular three articles """
     for result in popular_articles:
-        print '\n' + '"' + result[0] + '" -- ' + str(result[1]) + " views"
+        print '\n' + '"' + result[0] + '" --> ' + str(result[1]) + " views"
     print(' ')
 
 
 # Question 2. Who are the most popular article authors of all time?
 def print_popular_authors():
+    print """ The Most Popular Authors """
     query2 = """
             SELECT name, sum(article_views.views) AS views
             FROM authors_by_article, article_views
@@ -71,26 +72,26 @@ def print_popular_authors():
             GROUP BY name ORDER BY views DESC;
             """
     popular_authors = fetch_results(query2)
-    print """ The Most Popular Authors """
     for result in popular_authors:
-        print '\n' + '"' + result[0] + '" -- ' + str(result[1]) + " views"
+        print '\n' + '"' + result[0] + '" --> ' + str(result[1]) + " views"
     print(' ')
 
 
 # Question 3. On which days did more than 1% of requests lead to errors?
 def print_error_request():
+    print """ Days in which more than 1% of requests lead to errors """
     query3 = """
-            SELECT errors2.day, (errors2.errors/total_status2.total * 100)
+            SELECT errors2.day, 
+            ROUND(100 * sum(errors2.errors/total_status2.total)::DECIMAL, 2)
             AS Error_Percentage
             FROM errors2, total_status2
             WHERE total_status2.day = errors2.day
             AND (((errors2.errors/total_status2.total) * 100) > 1.0)
-            ORDER BY errors2.day;
-            """    
+            GROUP BY errors2.day;
+            """
     error_log = fetch_results(query3)
-    print """ The Most Popular Authors """
     for result in error_log:
-        print '\n' + '"' + str(result[0]) + '" -- ' + str(result[1]) + "% errors"
+        print '\n' + '"' + result[0].strftime('%B %d %Y') + '" --> ' + str(result[1]) + "% errors"
     print(' ')
 
 # Run all 3 functions when executed
