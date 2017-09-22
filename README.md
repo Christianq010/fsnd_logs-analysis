@@ -52,40 +52,7 @@
   * Use a combination of `select, from and where` SQL statements to explore data, look for connections and draw conclusions.
   
   3. Create the following Views - 
-  * Most Viewed Articles
-  ```sql
-      CREATE VIEW article_views AS
-      SELECT title,count(log.id) AS views 
-      FROM articles,log 
-      WHERE log.path = CONCAT('/article/', articles.slug) 
-      GROUP BY articles.title 
-      ORDER BY views DESC;
-  ```
-  * Most Popular Authors  
-  ```sql
-     CREATE VIEW authors_by_article AS
-     SELECT title, name
-     FROM articles, authors
-     WHERE articles.author = authors.id;
-  ```
-  * The days with the most Error Logs
-
-  ```sql
-    CREATE VIEW total_status2 AS
-    SELECT time ::timestamp::date AS date, cast(count(status) AS float) AS total_count
-    FROM log
-    GROUP BY date
-    ORDER BY total_count DESC;
-  ```
-
-  ```sql
-    CREATE VIEW errors2 AS
-    SELECT time ::timestamp::date AS date, cast(count(status) AS float) AS errors
-    FROM log
-    WHERE status != '200 OK'
-    GROUP BY date
-    ORDER BY errors DESC;
-  ```
+  
 
 #### The Python Reporting Tool 
   * After the Views have been created, inside the virtual machine run `tool.py` with - 
