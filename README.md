@@ -52,7 +52,14 @@
   * Use a combination of `select, from and where` SQL statements to explore data, look for connections and draw conclusions.
   
   3. Create the following Views - 
-  
+```sql
+Create view top_3_articles as
+select title, count(*) as page_views
+from articles join log
+on log.path = concat('/article/', articles.slug)
+group by articles.title
+order by page_views desc limit 3;
+```
 
 #### The Python Reporting Tool 
   * After the Views have been created, inside the virtual machine run `tool.py` with - 
