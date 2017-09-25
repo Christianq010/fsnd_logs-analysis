@@ -62,6 +62,16 @@ where status !='404 NOT FOUND'
 group by articles.title
 order by page_views desc;
 ```
+```sql 
+Create view top_authors4 as
+select author, count(*) as page_views
+from articles join log
+on log.path = concat('/article/', articles.slug)
+where status !='404 NOT FOUND'
+group by articles.author 
+order by page_views desc;
+```
+
 
 #### The Python Reporting Tool 
   * After the Views have been created, inside the virtual machine run `tool.py` with - 
@@ -79,8 +89,4 @@ order by page_views desc;
 * https://stackoverflow.com/questions/770579/how-to-calculate-percentage-with-a-sql-statement
 * https://stackoverflow.com/questions/466345/converting-string-into-datetime
 * https://www.postgresql.org/message-id/42231EB6.9F6D20F3%40rodos.fzk.de
-
-### Inspiration for Solution taken from the following projects
-* https://github.com/sagarchoudhary96/Log-Analysis
-* https://github.com/BrendanCarlin/log_analysis
-* https://github.com/zmrow/Udacity_logs_analysis
+* http://www.zentut.com/sql-tutorial/sql-inner-join/
