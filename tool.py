@@ -8,13 +8,14 @@ Create view top_3_articles as
 select title, count(*) as page_views
 from articles join log
 on log.path = concat('/article/', articles.slug)
+where status !='404 NOT FOUND'
 group by articles.title
-order by page_views desc limit 3;
+order by page_views desc;
 """
 def print_popular_articles():
     print " The Most Popular Articles "
     print '--'
-    query1 = "select title, concat(concat(page_views,' '), 'views') as views from top_3_articles;"
+    query1 = "select title, concat(concat(page_views,' '), 'views')as views from top_3_articles limit 3;"
     try:
         # Connect to our Database
         database = psycopg2.connect(database="news")

@@ -49,6 +49,7 @@
   2. Use the following commands to explore the database - `psql -d news`.
   * `\dt` — display tables — lists the tables that are available in the database.
   * `\d table` — (replace table with the name of a table) — shows the database schema for that particular table.
+  * Drop table even if other tables depend on it  - `DROP TABLE tableName CASCADE;`
   * Use a combination of `select, from and where` SQL statements to explore data, look for connections and draw conclusions.
   
   3. Create the following Views - 
@@ -57,8 +58,9 @@ Create view top_3_articles as
 select title, count(*) as page_views
 from articles join log
 on log.path = concat('/article/', articles.slug)
+where status !='404 NOT FOUND'
 group by articles.title
-order by page_views desc limit 3;
+order by page_views desc;
 ```
 
 #### The Python Reporting Tool 
