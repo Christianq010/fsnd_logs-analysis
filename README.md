@@ -90,3 +90,4 @@ order by page_views desc;
 * https://stackoverflow.com/questions/466345/converting-string-into-datetime
 * https://www.postgresql.org/message-id/42231EB6.9F6D20F3%40rodos.fzk.de
 * http://www.zentut.com/sql-tutorial/sql-inner-join/
+* https://stackoverflow.com/questions/6133107/extract-date-yyyy-mm-dd-from-a-timestamp-in-postgresql
