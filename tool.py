@@ -1,4 +1,5 @@
 import psycopg2
+from datetime import datetime
 
 
 # Question 1. What are the most popular three articles of all time?
@@ -97,7 +98,7 @@ order by daily_error_percentage desc limit 5;
 def print_error_request():
     print " Days in which more than 1% of requests lead to errors "
     print '--'
-    query3 = "select date, concat(concat(daily_error_percentage,' '), '%')as percentage from daily_error_percentage_table limit 1;"
+    query3 = "select date, concat(concat(daily_error_percentage,'%'), ' errors')as percentage from daily_error_percentage_table limit 1;"
     try:
         # Connect to our Database
         database = psycopg2.connect(database="news")
@@ -109,7 +110,7 @@ def print_error_request():
         query_results = c.fetchall()
         database.close()
         for i in query_results:
-            print (i[0] + ' -- ' + i[1])
+            print (i[0].strftime('%B %d, %Y') + ' -- ' + i[1])
         print '\n'
     except BaseException:
         print("Sorry, unable to fetch results from Database")
