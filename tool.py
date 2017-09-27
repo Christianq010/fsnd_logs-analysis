@@ -13,6 +13,12 @@ where status !='404 NOT FOUND'
 group by articles.title
 order by page_views desc;
 """
+
+""" 
+* Exploring the database in the terminal we find slug in the articles table resemble the path in the log table.
+* We use the concat function and combine '/article/' into the slug to perform a join on the table.
+https://www.w3resource.com/PostgreSQL/concat-function.php
+"""
 def print_popular_articles():
     print " The Most Popular Articles "
     print '--'
@@ -27,6 +33,7 @@ def print_popular_articles():
         # fetch results from the cursor
         query_results = c.fetchall()
         database.close()
+        # Iterate over the rows and get our results
         for i in query_results:
             print ('"' + i[0] + '"'+ ' -- ' +  i[1])
         print '\n'
@@ -45,18 +52,18 @@ where status !='404 NOT FOUND'
 group by articles.author 
 order by page_views desc;
 """
+
+""" 
+* Similar to the previous view but this time we return a table with the author to perform a join with the authors table.
+"""
 def print_popular_authors():
     print " The Most Popular Authors "
     print '--'
     query2 = "select name, concat(concat(page_views,' '), 'views')as views from top_authors join authors on top_authors.author = authors.id limit 4;"
     try:
-        # Connect to our Database
         database = psycopg2.connect(database="news")
-        # cursor runs queries and fetches results
         c = database.cursor()
-        # execute queries above from the cursor
         c.execute(query2)
-        # fetch results from the cursor
         query_results = c.fetchall()
         database.close()
         for i in query_results:
@@ -95,18 +102,26 @@ round(100 * (daily_error), 2) as daily_error_percentage
 from daily_error_number2
 order by daily_error_percentage desc limit 5;
 """
+
+"""
+* The idea behind these views, is that we create separate tables for total requests, total errors
+* Then we divide the total errors by total requests
+* I convert it's type to decimal as I ran into errors while rounding up and multiplying in the next table.
+https://stackoverflow.com/questions/42149496/pgsql-error-you-might-need-to-add-explicit-type-casts
+* We cast our timestamp to a date by suffixing it with ::date
+https://stackoverflow.com/questions/6133107/extract-date-yyyy-mm-dd-from-a-timestamp-in-postgresql
+* Used strftime = "string format time" for datetime conversion because I ran into an error printing the query results onto the terminal.
+https://docs.python.org/2/library/datetime.html#strftime-and-strptime-behavior
+http://strftime.org/
+"""
 def print_error_request():
     print " Days in which more than 1% of requests lead to errors "
     print '--'
     query3 = "select date, concat(concat(daily_error_percentage,'%'), ' errors')as percentage from daily_error_percentage_table limit 1;"
     try:
-        # Connect to our Database
         database = psycopg2.connect(database="news")
-        # cursor runs queries and fetches results
         c = database.cursor()
-        # execute queries above from the cursor
         c.execute(query3)
-        # fetch results from the cursor
         query_results = c.fetchall()
         database.close()
         for i in query_results:
