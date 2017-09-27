@@ -14,15 +14,22 @@ group by articles.title
 order by page_views desc;
 """
 
-""" 
-* Exploring the database in the terminal we find slug in the articles table resemble the path in the log table.
-* We use the concat function and combine '/article/' into the slug to perform a join on the table.
+"""
+* Exploring the database in the terminal we find
+slug in the articles table resemble the path in the log table.
+* We use the concat function and combine '/article/'
+into the slug to perform a join on the table.
 https://www.w3resource.com/PostgreSQL/concat-function.php
 """
+
+
 def print_popular_articles():
     print " The Most Popular Articles "
     print '--'
-    query1 = "select title, concat(concat(page_views,' '), 'views')as views from top_3_articles limit 3;"
+    query1 = """
+            select title, concat(concat(page_views,' '), 'views')as views
+            from top_3_articles limit 3;
+            """
     try:
         # Connect to our Database
         database = psycopg2.connect(database="news")
@@ -35,7 +42,7 @@ def print_popular_articles():
         database.close()
         # Iterate over the rows and get our results
         for i in query_results:
-            print ('"' + i[0] + '"'+ ' -- ' +  i[1])
+            print('"' + i[0] + '"' + ' -- ' + i[1])
         print '\n'
     except BaseException:
         print("Sorry, unable to fetch results from Database")
@@ -49,17 +56,25 @@ select author, count(*) as page_views
 from articles join log
 on log.path = concat('/article/', articles.slug)
 where status !='404 NOT FOUND'
-group by articles.author 
+group by articles.author
 order by page_views desc;
 """
 
-""" 
-* Similar to the previous view but this time we return a table with the author to perform a join with the authors table.
 """
+* Similar to the previous view
+but this time we return a table with the author to perform a
+join with the authors table.
+"""
+
+
 def print_popular_authors():
     print " The Most Popular Authors "
     print '--'
-    query2 = "select name, concat(concat(page_views,' '), 'views')as views from top_authors join authors on top_authors.author = authors.id limit 4;"
+    query2 = """
+            select name, concat(concat(page_views,' '), 'views')as views
+            from top_authors join authors on top_authors.author = authors.id
+            limit 4;
+            """
     try:
         database = psycopg2.connect(database="news")
         c = database.cursor()
@@ -67,11 +82,10 @@ def print_popular_authors():
         query_results = c.fetchall()
         database.close()
         for i in query_results:
-            print ('"' + i[0] + '"'+ ' -- ' +  i[1])
+            print ('"' + i[0] + '"' + ' -- ' + i[1])
         print '\n'
     except BaseException:
         print("Sorry, unable to fetch results from Database")
-
 
 
 # Question 3. On which days did more than 1% of requests lead to errors?
@@ -91,7 +105,8 @@ order by requests_failures desc;
 
 Create view daily_error_number2 as
 select All_Errors2.date,
-cast(All_Errors2.requests_failures as decimal) / cast(All_Requests2.total_requests as decimal) as daily_error
+cast(All_Errors2.requests_failures as decimal) /
+cast(All_Requests2.total_requests as decimal) as daily_error
 from All_Requests2 join All_Errors2
 on All_Requests2.date = All_Errors2.date
 order by daily_error desc;
@@ -104,20 +119,29 @@ order by daily_error_percentage desc limit 5;
 """
 
 """
-* The idea behind these views, is that we create separate tables for total requests, total errors
-* Then we divide the total errors by total requests
-* I convert it's type to decimal as I ran into errors while rounding up and multiplying in the next table.
+* The idea behind these views, is that we create separate tables
+for total requests,total errors.
+* Then we divide the total errors by total requests.
+* I convert it's type to decimal as I ran into errors while rounding up and
+multiplying in the next table.
 https://stackoverflow.com/questions/42149496/pgsql-error-you-might-need-to-add-explicit-type-casts
 * We cast our timestamp to a date by suffixing it with ::date
 https://stackoverflow.com/questions/6133107/extract-date-yyyy-mm-dd-from-a-timestamp-in-postgresql
-* Used strftime = "string format time" for datetime conversion because I ran into an error printing the query results onto the terminal.
+* Used strftime = "string format time" for datetime conversion because
+I ran into an error printing the query results onto the terminal.
 https://docs.python.org/2/library/datetime.html#strftime-and-strptime-behavior
 http://strftime.org/
 """
+
+
 def print_error_request():
     print " Days in which more than 1% of requests lead to errors "
     print '--'
-    query3 = "select date, concat(concat(daily_error_percentage,'%'), ' errors')as percentage from daily_error_percentage_table limit 1;"
+    query3 = """
+            select date, concat(concat(daily_error_percentage,'%'), ' errors')
+            as percentage
+            from daily_error_percentage_table limit 1;
+            """
     try:
         database = psycopg2.connect(database="news")
         c = database.cursor()
@@ -129,8 +153,6 @@ def print_error_request():
         print '\n'
     except BaseException:
         print("Sorry, unable to fetch results from Database")
-
-
 
 # Run all 3 functions when executed
 if __name__ == "__main__":
