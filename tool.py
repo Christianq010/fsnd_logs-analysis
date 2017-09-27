@@ -66,15 +66,58 @@ def print_popular_authors():
 
 
 
-"""
 # Question 3. On which days did more than 1% of requests lead to errors?
-def print_error_request():
-    print Days in which more than 1% of requests lead to errors
-
 """
+Create view All_Requests2 as
+select time ::timestamp::date as date, count(*) as total_requests
+from log
+group by date
+order by total_requests desc;
+
+Create view All_Errors2 as
+select time ::timestamp::date as date, count(*) as requests_failures
+from log
+where status = '404 NOT FOUND'
+group by date
+order by requests_failures desc;
+
+Create view daily_error_number2 as
+select All_Errors2.date,
+cast(All_Errors2.requests_failures as decimal) / cast(All_Requests2.total_requests as decimal) as daily_error
+from All_Requests2 join All_Errors2
+on All_Requests2.date = All_Errors2.date
+order by daily_error desc;
+
+Create view daily_error_percentage_table as
+select date,
+round(100 * (daily_error), 2) as daily_error_percentage
+from daily_error_number2
+order by daily_error_percentage desc limit 5;
+"""
+def print_error_request():
+    print " Days in which more than 1% of requests lead to errors "
+    print '--'
+    query3 = "select date, concat(concat(daily_error_percentage,' '), '%')as percentage from daily_error_percentage_table limit 1;"
+    try:
+        # Connect to our Database
+        database = psycopg2.connect(database="news")
+        # cursor runs queries and fetches results
+        c = database.cursor()
+        # execute queries above from the cursor
+        c.execute(query3)
+        # fetch results from the cursor
+        query_results = c.fetchall()
+        database.close()
+        for i in query_results:
+            print (i[0] + ' -- ' + i[1])
+        print '\n'
+    except BaseException:
+        print("Sorry, unable to fetch results from Database")
+
+
 
 # Run all 3 functions when executed
 if __name__ == "__main__":
     print_popular_articles()
     print_popular_authors()
-    # print_error_request()
+    print_error_request()
