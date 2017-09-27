@@ -53,25 +53,56 @@
   * Use a combination of `select, from and where` SQL statements to explore data, look for connections and draw conclusions.
   
   3. Create the following Views - 
-```sql
-Create view top_3_articles as
-select title, count(*) as page_views
-from articles join log
-on log.path = concat('/article/', articles.slug)
-where status !='404 NOT FOUND'
-group by articles.title
-order by page_views desc;
-```
-```sql 
-Create view top_authors4 as
-select author, count(*) as page_views
-from articles join log
-on log.path = concat('/article/', articles.slug)
-where status !='404 NOT FOUND'
-group by articles.author 
-order by page_views desc;
-```
+  ```sql
+  Create view top_3_articles as
+  select title, count(*) as page_views
+  from articles join log
+  on log.path = concat('/article/', articles.slug)
+  where status !='404 NOT FOUND'
+  group by articles.title
+  order by page_views desc;
+  ```
+  ```sql 
+  Create view top_authors4 as
+  select author, count(*) as page_views
+  from articles join log
+  on log.path = concat('/article/', articles.slug)
+  where status !='404 NOT FOUND'
+  group by articles.author 
+  order by page_views desc;
+  ```
+  ```sql
+  Create view All_Requests2 as
+  select time ::timestamp::date as date, count(*) as total_requests
+  from log
+  group by date
+  order by total_requests desc;
+  ```
+  ```sql
+  Create view All_Errors2 as
+  select time ::timestamp::date as date, count(*) as requests_failures
+  from log
+  where status = '404 NOT FOUND'
+  group by date
+  order by requests_failures desc;
+  ```
 
+  ```sql
+  Create view daily_error_number2 as
+  select All_Errors2.date,
+  cast(All_Errors2.requests_failures as decimal) / cast(All_Requests2.total_requests as decimal) as daily_error
+  from All_Requests2 join All_Errors2
+  on All_Requests2.date = All_Errors2.date
+  order by daily_error desc;
+  ```
+
+  ```sql
+  Create view daily_error_percentage_table as
+  select date,
+  round(100 * (daily_error), 2) as daily_error_percentage
+  from daily_error_number2
+  order by daily_error_percentage desc limit 5;
+  ```
 
 #### The Python Reporting Tool 
   * After the Views have been created, inside the virtual machine run `tool.py` with - 
