@@ -86,7 +86,6 @@
   group by date
   order by requests_failures desc;
   ```
-
   ```sql
   Create view daily_error_number2 as
   select All_Errors2.date,
@@ -95,7 +94,6 @@
   on All_Requests2.date = All_Errors2.date
   order by daily_error desc;
   ```
-
   ```sql
   Create view daily_error_percentage_table as
   select date,
@@ -112,7 +110,21 @@
   * The python file `tool.py` executes 3 functions, printing out the answers onto the terminal.
 
 #### Notes: 
+  * Exploring the database in the terminal we find slug in the articles table resemble the path in the log       table.
+  * We use the concat function and combine '/article/' into the slug to perform a join on the table.
+    https://www.w3resource.com/PostgreSQL/concat-function.php
+  * The view for our 2nd query is similar to the first but this time we return a table with the author to        perform a join with the authors table(id).
+  * The idea behind these views, is that we create separate tables for total requests, total errors
+  * Then we divide the total errors by total requests
+  * I convert it's type to decimal as I ran into errors while rounding up and multiplying in the next table.
+    https://stackoverflow.com/questions/42149496/pgsql-error-you-might-need-to-add-explicit-type-casts
+  * We cast our timestamp to a date by suffixing it with ::date
+    https://stackoverflow.com/questions/6133107/extract-date-yyyy-mm-dd-from-a-timestamp-in-postgresql
+  * Used strftime = "string format time" for datetime conversion because I ran into an error printing the        query results onto the terminal.
+    https://docs.python.org/2/library/datetime.html#strftime-and-strptime-behavior
+    http://strftime.org/
   * Use ES Lint to Clean Code to PEP Standards.
+
 
 ### References
 * https://www.postgresql.org/docs/9.5/static/functions-string.html
