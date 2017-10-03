@@ -82,7 +82,7 @@ def print_popular_authors():
         query_results = c.fetchall()
         database.close()
         for i in query_results:
-            print ('"' + i[0] + '"' + ' -- ' + i[1])
+            print('"' + i[0] + '"' + ' -- ' + i[1])
         print '\n'
     except BaseException:
         print("Sorry, unable to fetch results from Database")
@@ -149,10 +149,11 @@ def print_error_request():
         query_results = c.fetchall()
         database.close()
         for i in query_results:
-            print (i[0].strftime('%B %d, %Y') + ' -- ' + i[1])
+            print(i[0].strftime('%B %d, %Y') + ' -- ' + i[1])
         print '\n'
     except BaseException:
         print("Sorry, unable to fetch results from Database")
+
 
 # Run all 3 functions when executed
 if __name__ == "__main__":
